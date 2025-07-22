@@ -170,12 +170,40 @@
             <img id="breedImage" class="breed-image" height="300" alt="Dog breed" />
             <p id="breedDescription" class="breed-description"></p>
             <a id="akcLink" class="akc-link" target="_blank">Visit AKC Page</a>
+            <p id="breedCounter" style="color: #666; font-size: 0.9em; margin-top: 15px;"></p>
         </div>
     </div>
 
     <script>
         let dogBreeds = [];
+        let remainingBreeds = [];
         let isLoading = true;
+
+        // Fisher-Yates shuffle algorithm
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // Initialize breeds for no-duplicate selection
+        function initializeBreeds() {
+            remainingBreeds = shuffleArray(dogBreeds);
+            console.log(`Initialized ${remainingBreeds.length} breeds for selection`);
+            updateBreedCounter();
+        }
+
+        // Update breed counter display
+        function updateBreedCounter() {
+            const counter = document.getElementById('breedCounter');
+            if (dogBreeds.length > 0) {
+                const seen = dogBreeds.length - remainingBreeds.length;
+                counter.textContent = `${seen} of ${dogBreeds.length} breeds seen`;
+            }
+        }
 
         // Load breed data from JSON file
         async function loadBreeds() {
@@ -193,6 +221,7 @@
                 button.disabled = false;
                 button.innerHTML = 'Get Random Breed';
                 isLoading = false;
+                initializeBreeds();
                 
             } catch (error) {
                 console.error('Failed to load breed data:', error);
@@ -209,6 +238,7 @@
                 button.disabled = false;
                 button.innerHTML = 'Get Random Breed';
                 isLoading = false;
+                initializeBreeds();
             }
         }
 
@@ -218,8 +248,15 @@
                 return;
             }
 
-            const randomIndex = Math.floor(Math.random() * dogBreeds.length);
-            const selectedBreed = dogBreeds[randomIndex];
+            // If no breeds remaining, reshuffle all breeds
+            if (remainingBreeds.length === 0) {
+                console.log('All breeds seen! Reshuffling...');
+                initializeBreeds();
+            }
+
+            // Pop the next breed from the shuffled array
+            const selectedBreed = remainingBreeds.pop();
+            console.log(`Selected ${selectedBreed.name}, ${remainingBreeds.length} breeds remaining`);
             
             // Update display elements
             document.getElementById('breedName').textContent = selectedBreed.name;
@@ -228,7 +265,8 @@
             document.getElementById('breedDescription').textContent = selectedBreed.description || 'No description available';
             document.getElementById('akcLink').href = selectedBreed.akcLink;
             
-            // Show the breed display with animation
+            // Update counter and show the breed display with animation
+            updateBreedCounter();
             const displayElement = document.getElementById('breedDisplay');
             displayElement.classList.add('show');
         }

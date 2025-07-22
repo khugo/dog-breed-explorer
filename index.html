@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dog Breed Explorer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            font-weight: 700;
+        }
+
+        .random-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .random-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .breed-display {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .breed-display.show {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .breed-name {
+            font-size: 2em;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .breed-image {
+            width: 300px;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .akc-link {
+            display: inline-block;
+            background: #f8f9fa;
+            color: #667eea;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            border: 2px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .akc-link:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .breed-image {
+                width: 250px;
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐕 Dog Breed Explorer</h1>
+        <button class="random-btn" onclick="getRandomBreed()">Get Random Breed</button>
+        
+        <div id="breedDisplay" class="breed-display">
+            <h2 id="breedName" class="breed-name"></h2>
+            <img id="breedImage" class="breed-image" alt="Dog breed" />
+            <br>
+            <a id="akcLink" class="akc-link" target="_blank">Visit AKC Page</a>
+        </div>
+    </div>
+
+    <script>
+        // Hardcoded dog breeds data
+        const dogBreeds = [
+            {
+                name: "Golden Retriever",
+                akcLink: "https://www.akc.org/dog-breeds/golden-retriever/",
+                imageUrl: "https://www.akc.org/wp-content/uploads/2017/11/Golden-Retriever-standing-outdoors.jpg"
+            },
+            {
+                name: "German Shepherd",
+                akcLink: "https://www.akc.org/dog-breeds/german-shepherd-dog/",
+                imageUrl: "https://www.akc.org/wp-content/uploads/2017/11/German-Shepherd-Dog-standing-in-profile-outdoors.jpg"
+            },
+            {
+                name: "Labrador Retriever",
+                akcLink: "https://www.akc.org/dog-breeds/labrador-retriever/",
+                imageUrl: "https://www.akc.org/wp-content/uploads/2017/11/Labrador-Retriever-standing-outdoors.jpg"
+            },
+            {
+                name: "French Bulldog",
+                akcLink: "https://www.akc.org/dog-breeds/french-bulldog/",
+                imageUrl: "https://www.akc.org/wp-content/uploads/2017/11/French-Bulldog-standing-outdoors.jpg"
+            },
+            {
+                name: "Border Collie",
+                akcLink: "https://www.akc.org/dog-breeds/border-collie/",
+                imageUrl: "https://www.akc.org/wp-content/uploads/2017/11/Border-Collie-standing-outdoors.jpg"
+            },
+            {
+                name: "Siberian Husky",
+                akcLink: "https://www.akc.org/dog-breeds/siberian-husky/",
+                imageUrl: "https://www.akc.org/wp-content/uploads/2017/11/Siberian-Husky-standing-outdoors.jpg"
+            },
+            {
+                name: "Poodle",
+                akcLink: "https://www.akc.org/dog-breeds/poodle-standard/",
+                imageUrl: "https://www.akc.org/wp-content/uploads/2017/11/Poodle-Standard-standing-outdoors.jpg"
+            },
+            {
+                name: "Beagle",
+                akcLink: "https://www.akc.org/dog-breeds/beagle/",
+                imageUrl: "https://www.akc.org/wp-content/uploads/2017/11/Beagle-standing-outdoors.jpg"
+            }
+        ];
+
+        function getRandomBreed() {
+            const randomIndex = Math.floor(Math.random() * dogBreeds.length);
+            const selectedBreed = dogBreeds[randomIndex];
+            
+            // Update display elements
+            document.getElementById('breedName').textContent = selectedBreed.name;
+            document.getElementById('breedImage').src = selectedBreed.imageUrl;
+            document.getElementById('breedImage').alt = selectedBreed.name;
+            document.getElementById('akcLink').href = selectedBreed.akcLink;
+            
+            // Show the breed display with animation
+            const displayElement = document.getElementById('breedDisplay');
+            displayElement.classList.remove('show');
+            setTimeout(() => {
+                displayElement.classList.add('show');
+            }, 50);
+        }
+    </script>
+</body>
+</html>

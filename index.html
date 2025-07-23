@@ -75,6 +75,13 @@
             font-size: 2em;
             font-weight: 700;
             color: #333;
+            margin-bottom: 10px;
+        }
+
+        .breed-finnish-name {
+            font-size: 1.1em;
+            font-weight: 400;
+            color: #666;
             margin-bottom: 20px;
         }
 
@@ -167,6 +174,7 @@
         
         <div id="breedDisplay" class="breed-display">
             <h2 id="breedName" class="breed-name"></h2>
+            <div id="breedFinnishName" class="breed-finnish-name"></div>
             <img id="breedImage" class="breed-image" height="300" alt="Dog breed" />
             <p id="breedDescription" class="breed-description"></p>
             <a id="akcLink" class="akc-link" target="_blank">Visit AKC Page</a>
@@ -260,6 +268,16 @@
             
             // Update display elements
             document.getElementById('breedName').textContent = selectedBreed.name;
+            
+            // Update Finnish name with flag emoji if available
+            const finnishNameElement = document.getElementById('breedFinnishName');
+            if (selectedBreed.finnishName) {
+                finnishNameElement.textContent = `🇫🇮 ${selectedBreed.finnishName}`;
+                finnishNameElement.style.display = 'block';
+            } else {
+                finnishNameElement.style.display = 'none';
+            }
+            
             document.getElementById('breedImage').src = selectedBreed.imageUrl;
             document.getElementById('breedImage').alt = selectedBreed.name;
             document.getElementById('breedDescription').textContent = selectedBreed.description || 'No description available';

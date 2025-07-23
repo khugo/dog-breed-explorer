@@ -1,5 +1,7 @@
 # Dog Breed Explorer
 
+https://khugo.github.io/dog-breed-explorer/
+
 A single-page webapp that randomly selects dog breeds from the AKC database.
 
 ## Usage

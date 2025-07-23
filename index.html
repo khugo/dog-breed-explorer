@@ -115,6 +115,11 @@
             border-radius: 15px;
             margin-bottom: 20px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: opacity 0.3s ease;
+        }
+
+        .breed-image.image-loading {
+            background: #e5e5e5;
         }
 
         .akc-link {
@@ -291,8 +296,22 @@
                 finnishNameElement.style.display = 'none';
             }
             
-            document.getElementById('breedImage').src = selectedBreed.imageUrl;
-            document.getElementById('breedImage').alt = selectedBreed.name;
+            // Clear old image and show loading state immediately
+            const imageElement = document.getElementById('breedImage');
+            imageElement.src = '';
+            imageElement.classList.add('image-loading');
+            imageElement.alt = selectedBreed.name;
+            
+            // Set up event handlers before loading new image
+            imageElement.onload = function() {
+                imageElement.classList.remove('image-loading');
+            };
+            imageElement.onerror = function() {
+                imageElement.classList.remove('image-loading');
+            };
+            
+            // Load new image
+            imageElement.src = selectedBreed.imageUrl;
             document.getElementById('breedDescription').textContent = selectedBreed.description || 'No description available';
             document.getElementById('akcLink').href = selectedBreed.akcLink;
             

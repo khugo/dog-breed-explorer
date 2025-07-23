@@ -40,6 +40,10 @@
             display: none;
         }
 
+        .container.compact .random-btn {
+            margin-top: 0;
+        }
+
         h1 {
             color: #333;
             margin-bottom: 30px;
@@ -56,7 +60,7 @@
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-bottom: 30px;
+            margin-top: 30px;
             font-weight: 600;
         }
 
@@ -175,10 +179,6 @@
 <body>
     <div class="container compact">
         <h1>🐕 Dog Breed Explorer</h1>
-        <button class="random-btn" id="randomBtn" onclick="getRandomBreed()">
-            Get Random Breed
-            <span class="loading" id="loadingSpinner" style="display: none;"></span>
-        </button>
         
         <div id="breedDisplay" class="breed-display">
             <h2 id="breedName" class="breed-name"></h2>
@@ -188,6 +188,11 @@
             <a id="akcLink" class="akc-link" target="_blank">Visit AKC Page</a>
             <p id="breedCounter" style="color: #666; font-size: 0.9em; margin-top: 15px;"></p>
         </div>
+        
+        <button class="random-btn" id="randomBtn" onclick="getRandomBreed()">
+            Get Random Breed
+            <span class="loading" id="loadingSpinner" style="display: none;"></span>
+        </button>
     </div>
 
     <script>

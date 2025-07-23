@@ -29,6 +29,15 @@
             text-align: center;
             max-width: 500px;
             width: 100%;
+            transition: all 0.4s ease-in-out;
+        }
+
+        .container.compact {
+            padding: 30px;
+        }
+
+        .container.compact .breed-display {
+            display: none;
         }
 
         h1 {
@@ -158,14 +167,13 @@
             }
             
             .breed-image {
-                width: 250px;
                 height: 250px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container compact">
         <h1>🐕 Dog Breed Explorer</h1>
         <button class="random-btn" id="randomBtn" onclick="getRandomBreed()">
             Get Random Breed
@@ -285,6 +293,11 @@
             
             // Update counter and show the breed display with animation
             updateBreedCounter();
+            
+            // Remove compact class to expand container and show breed display
+            const container = document.querySelector('.container');
+            container.classList.remove('compact');
+            
             const displayElement = document.getElementById('breedDisplay');
             displayElement.classList.add('show');
         }
